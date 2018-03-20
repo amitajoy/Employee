@@ -18,4 +18,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEmployee(String empId) {
         return null;
     }
+
+    @Override
+    public void addEmployee(String fname, String lname, int salary) {
+
+    }
+
+    @Override
+    public void removeEmployee(String empId) {
+
+    }
 }
