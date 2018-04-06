@@ -14,7 +14,7 @@ import java.util.Properties;
  *
  */
 @SpringBootApplication
-//@Import(MongoSpringConfig.class)
+@Import(SwaggerConfig.class)
 @ComponentScan({"com.test.employee" , "com.test.employee.impl"})
 
 public class App 

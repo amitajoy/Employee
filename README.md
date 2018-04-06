@@ -1,5 +1,15 @@
 This is a sample project
 
+spring boot
+mongodb
+rest
+
+
+swagger
+splunk
+Integration test using the DB
+
+
 To run the server in non-mock mode against a real database:
 
 ./run.sh
