@@ -1,0 +1,63 @@
+package com.test;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.authentication.UserCredentials;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+@Configuration
+@ComponentScan(basePackages = {"com.test.employee.model"}) //for the JPA object
+@EnableMongoRepositories(basePackages = "com.test.employee.repository") //for the repo
+public class MongoSpringConfig extends AbstractMongoConfiguration {
+
+    protected static final Logger LOGGER = LoggerFactory.getLogger(MongoSpringConfig.class);
+
+    @Value("${MONGO_URI}")
+    protected String mongoUri;
+
+    @Value("${MONGO_USERNAME}")
+    protected String mongoUsername;
+
+    @Value("${MONGO_PASSWORD}")
+    protected String mongoPassword;
+
+
+//    @Bean
+//    public MongoDbFactory mongoDbFactory(){
+//        return new SimpleMongoDbFactory(mongoClient(), getDatabaseName(), getUserCredentials());
+//    }
+
+    @Override
+    @Bean
+    public MongoClient mongoClient() {
+        LOGGER.info("mongoUri={}, mongoUsername={}, mongoPassword={}",mongoUri,mongoUsername,mongoPassword);
+        return new MongoClient(new MongoClientURI(mongoUri));
+    }
+
+    @Override
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        LOGGER.info("mongoUri={}, mongoUsername={}, mongoPassword={}",mongoUri,mongoUsername,mongoPassword);
+        return new MongoTemplate(mongoDbFactory());
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        LOGGER.info("mongoUri={}, mongoUsername={}, mongoPassword={}",mongoUri,mongoUsername,mongoPassword);
+
+        return new MongoClientURI(mongoUri).getDatabase();
+    }
+
+    protected UserCredentials getUserCredentials() {
+        LOGGER.info("mongoUri={}, mongoUsername={}, mongoPassword={}",mongoUri,mongoUsername,mongoPassword);
+        return new UserCredentials(mongoUsername, mongoPassword);
+    }
+}
