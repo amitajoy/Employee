@@ -10,6 +10,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.test.greeting.GreetingController.GREETING_RESOURCE;
 import static com.test.employee.EmployeeController.EMPLOYEES_RESOURCE;
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -17,17 +18,27 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    public static final String PATH_REGEX = EMPLOYEES_RESOURCE+".*";
-
     @Bean
-    public Docket productApi() {
+    public Docket employeeApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("employeeApi")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.test"))
-                .paths(regex(PATH_REGEX))
+                .paths(regex(EMPLOYEES_RESOURCE+".*"))
                 .build()
                 .apiInfo(metaData());
     }
+    @Bean
+    public Docket greetingApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("greetingApi")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.test.greeting"))
+                .paths(regex(GREETING_RESOURCE+".*"))
+                .build();
+                //.apiInfo(metaData());
+    }
+
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
                 "Spring Boot REST API",
